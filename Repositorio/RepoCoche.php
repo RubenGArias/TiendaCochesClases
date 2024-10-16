@@ -1,9 +1,9 @@
 <?php
 class RepoCoche implements RepoCrud {
-    private $conexion;
+    private $con;
 
-    public function __construct() {
-        $this->conexion = Conexion::getConnection();
+    public function __construct($con) {
+        $this->con = $con;
     }
 
     public function add($coche) {
@@ -11,11 +11,21 @@ class RepoCoche implements RepoCrud {
         // No devuelve nada
     }
 
-    public function get(int $id) {
-        // Lógica para obtener el coche por ID
-        $marca = new Marca("MarcaDePrueba", "ModeloDePrueba");
-        return new Coche("1234ABC", $marca);
+    public function findById($matricula) {
+        $stm = $this->con->prepare("select * from coche where matricula =  :matricula");
+        $res = $stm->extecute([:matricula => $matricula]);
+        $coche=null;
+        if($res){
+            $coche = new Coche();
+            $resgistro = $res=fetch();
+            $coche->matricula = $resgistro['matricula'];
+            $coche->marca = $resgistro['marca'];
+            $coche->modelo = $resgistro['modelo'];            
+        }
+        return $coche;
+        
     }
+
 
     public function update($coche) {
         // Lógica para actualizar el coche en la base de datos

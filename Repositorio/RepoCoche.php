@@ -1,4 +1,6 @@
 <?php
+$base = $_SERVER['DOCUMENT_ROOT'];
+require_once "$base/modelo/Coche.php";
 class RepoCoche implements RepoCrud {
     private $con;
 
@@ -13,11 +15,11 @@ class RepoCoche implements RepoCrud {
 
     public function findById($matricula) {
         $stm = $this->con->prepare("select * from coche where matricula =  :matricula");
-        $res = $stm->extecute([:matricula => $matricula]);
+        $res = $stm->execute(['matricula' => $matricula]);
         $coche=null;
         if($res){
             $coche = new Coche();
-            $resgistro = $res=fetch();
+            $resgistro = $res->fetch();
             $coche->matricula = $resgistro['matricula'];
             $coche->marca = $resgistro['marca'];
             $coche->modelo = $resgistro['modelo'];            

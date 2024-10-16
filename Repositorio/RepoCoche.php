@@ -1,5 +1,5 @@
 <?php
-$base = $_SERVER['DOCUMENT_ROOT'];
+$base = $_SERVER['DOCUMENT_ROOT'] . '/TiendaCochesClasess';
 require_once "$base/modelo/Coche.php";
 class RepoCoche implements RepoCrud {
     private $con;
@@ -14,15 +14,17 @@ class RepoCoche implements RepoCrud {
     }
 
     public function findById($matricula) {
-        $stm = $this->con->prepare("select * from car where id_car =  :matricula");
+        $stm = $this->con->prepare("select * from car where idcar =  :matricula");
         $stm->execute(['matricula' => $matricula]);
         $coche=null;
         $registro = $stm->fetch();
         if($registro){
-            $coche = new Coche();
-            $coche->matricula = $registro['matricula'];
-            $coche->marca = $registro['marca'];
-            $coche->modelo = $registro['modelo'];            
+            $matricula = $registro['idcar'];
+            $marcaa = $registro['brand'];
+            $modelo = $registro['brand_model'];
+            $marca = new Marca($marcaa, $modelo);
+            $coche = new Coche($matricula, $marca);
+
         }
         return $coche;
         

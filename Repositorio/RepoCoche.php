@@ -14,15 +14,15 @@ class RepoCoche implements RepoCrud {
     }
 
     public function findById($matricula) {
-        $stm = $this->con->prepare("select * from coche where matricula =  :matricula");
-        $res = $stm->execute(['matricula' => $matricula]);
+        $stm = $this->con->prepare("select * from car where id_car =  :matricula");
+        $stm->execute(['matricula' => $matricula]);
         $coche=null;
-        if($res){
+        $registro = $stm->fetch();
+        if($registro){
             $coche = new Coche();
-            $resgistro = $res->fetch();
-            $coche->matricula = $resgistro['matricula'];
-            $coche->marca = $resgistro['marca'];
-            $coche->modelo = $resgistro['modelo'];            
+            $coche->matricula = $registro['matricula'];
+            $coche->marca = $registro['marca'];
+            $coche->modelo = $registro['modelo'];            
         }
         return $coche;
         

@@ -1,12 +1,16 @@
 <?php
-private static con = null;
+class Conexion{
+    private static $con = null;
 
-public static function getConection():PDO{
-    if (con == null){
-        con = new PDO("Conexión para la base de datos");
+    public static function getConnection(): PDO {
+        if (self::$con == null) {
+            self::$con = new PDO("mysql:host=localhost;dbname=tiendacoches
+            ", "root", "root");
+        }
+        return self::$con;
     }
-    return con;
 }
+
 
 
 
